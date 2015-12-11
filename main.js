@@ -1,11 +1,5 @@
 $(document).ready(function(){
- /*   
-    $('#box').each(function(){
-        $(this).click(function(){
-            $(this).animate({top: '+=20'});
-        });
-    });*/
-    
+ 
     var audios = function(){
         var i = Math.floor(Math.random() * (4 - 1)) + 1;
         if(i === 1){
@@ -27,6 +21,8 @@ $(document).ready(function(){
     audio.play();
     var coinsound = $('#coinnoise')[0];
     coinsound.volume = 1;
+    var breaksound = $('#break')[0];
+    
     
     var mins = 0;
     var sec = 0;
@@ -41,8 +37,8 @@ $(document).ready(function(){
             sec++;
             if(sec <= 9){
             $('#seconds').text('0' + sec);}
-            else
-                $('#seconds').text(sec);
+            else{
+                $('#seconds').text(sec);}
         }
         
     }, 1000);
@@ -83,13 +79,16 @@ $(document).ready(function(){
         if(!$('#char').is(':animated')){
             switch(e.keyCode){
                 case 37:
-                    $('#char').css({background: 'url(\'dwarf.gif\')', 'background-position': 'center','background-size': 'contain','transform': 'rotatey(0deg)'}).animate({left: ['-=100px', 'linear']}, 'fast');
+                    $('#char').css({background: 'url(\'dwarf.gif\')', 'background-position': 'center','background-size': 'contain','transform': 'rotatey(0deg)'}).animate({left: ['-=10vw', 'linear']}, 'fast');
+                    $('#addition').animate({left: ['-=10vw', 'linear']}, 'fast');
                     break;
                 case 38:
-                    $('#char').animate({top: ['-=100px']}, 250).animate({top: ['+=100px', 'swing']}, 250);
+                    $('#char').animate({top: ['-=10vh']}, 250).animate({top: ['+=10vh', 'swing']}, 250);
+                    $('#addition').animate({top: ['-=10vh']}, 250).animate({top: ['+=10vh', 'swing']}, 250);
                     break;
                 case 39:
-                    $('#char').css({background: 'url(\'dwarf.gif\')','background-position': 'center','background-size': 'contain','transform': 'rotatey(180deg)'}).animate({left: ['+=100px', 'linear']}, 'fast');
+                    $('#char').css({background: 'url(\'dwarf.gif\')','background-position': 'center','background-size': 'contain','transform': 'rotatey(180deg)'}).animate({left: ['+=10vw', 'linear']}, 'fast');
+                    $('#addition').animate({left: ['+=10vw', 'linear']}, 'fast');
                     break;
             }
         }
@@ -117,7 +116,7 @@ $(document).ready(function(){
     var count = 0;
     function goldCoin(){
         count++;
-        var rnd = getRandomInt(1,9)*10;
+        var rnd = (getRandomInt(1,9)*10) + 1;
         $('#coins').append('<div class="coin" id="coin' + count + ' "style="left: ' + rnd + 'vw"></div>');
         
           
@@ -126,6 +125,9 @@ $(document).ready(function(){
             var bgbot = $('#bgimage').height();
             if(toppos >= bgbot){
                 $('.coin:first-child').remove();
+                score = Number($('#scorediv').html()) - 200;
+                $('#scorediv').text(score);
+                breaksound.play();
             }
         }, 200);
         
@@ -135,22 +137,51 @@ $(document).ready(function(){
                 $('.coin:first-child').css('visibility', 'hidden');
                 setTimeout(coinsound.play(), 300);
                 $('#addition').css({opacity: '1'}).animate({opacity: 0}, 500);
-                score = score + 100;
+                score = Number($('#scorediv').html()) + 100;
                 $('#scorediv').text(score);
+                var leftpos = $('.coin:first-child').offset().left;
+                var toppos = $('.coin:first-child').offset().top;
+                $('.coin:first-child').remove();
+                
+                
+                console.log(leftpos);
+                console.log(toppos);
+                $('#coins').append('<div class="coin2" id="collected" style="left: ' + leftpos + 'px; top: ' + toppos +'px" ></div>');
+                $('#collected').queue(false);
+                var lrpos = $('#scorediv').offset().left + 150;
+                $('#collected').animate({top: ['50px', 'linear'], 'left': [lrpos, 'linear']}, 500);
+                setTimeout(function(){$('#collected').remove()},505);
+                
             }
         }}, 200);}
         
-    function coinspawn(){setInterval(goldCoin, 2250);};
+    var coinspawn = function(delay){
+        var siID = setInterval(goldCoin, delay);
+        var scorefuncheck = Number($('#scorediv').html());
+        var clearfun = setInterval(function(){
+        if(Number($('#scorediv').html()) >= 1500){
+            console.log(true);
+            clearInterval(siID);
+            clearInterval(clearfun);
+        }}, 200);
+    };
     
+    var coinspawn2 = function(delay){
+        setInterval(goldCoin, delay);};
     
+    var scorecount = 0;
+    setInterval(function(){
+        var scorecheck = (Number($('#scorediv').html()));
+        if(scorecheck === 1500 && scorecount === 0){
+            coinspawn2(1500);
+            scorecount = 1;
+        }
+    }, 200);
     
-    setTimeout(coinspawn, 1000);
+    setTimeout(coinspawn(2250), 1000);
+    
     setInterval(function(){
     $('.coin').animate({top: ['+=100px', 'linear']});
     }, 400);
-    
-    
-    
-    
     
 });
