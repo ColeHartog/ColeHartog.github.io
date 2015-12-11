@@ -23,6 +23,7 @@ $(document).ready(function(){
     var audio = audios();
     
     audio.volume = .2;
+    audio.loop = true;
     audio.play();
     var coinsound = $('#coinnoise')[0];
     coinsound.volume = 1;
@@ -138,7 +139,7 @@ $(document).ready(function(){
         
         
     };
-    function coinspawn(){setInterval(goldCoin, 2500);};
+    function coinspawn(){setInterval(goldCoin, 2250);};
     
     
     
