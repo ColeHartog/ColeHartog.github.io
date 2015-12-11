@@ -120,9 +120,14 @@ $(document).ready(function(){
         var rnd = getRandomInt(1,9)*10;
         $('#coins').append('<div class="coin" id="coin' + count + ' "style="left: ' + rnd + 'vw"></div>');
         
-        
-        setTimeout(function(){
-        $('.coin:first-child').remove();}, 5000);
+          
+        setInterval(function hchecker(){
+            var toppos = $('.coin:first-child').position().top;
+            var bgbot = $('#bgimage').height();
+            if(toppos >= bgbot){
+                $('.coin:first-child').remove();
+            }
+        }, 200);
         
         
         setInterval(function(){ if(collision($('#char'), $('.coin:first-child')) == true){
@@ -133,12 +138,8 @@ $(document).ready(function(){
                 score = score + 100;
                 $('#scorediv').text(score);
             }
-        }   
-    }, 200);
+        }}, 200);}
         
-        
-        
-    };
     function coinspawn(){setInterval(goldCoin, 2250);};
     
     
