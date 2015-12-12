@@ -70,7 +70,7 @@ $(document).ready(function(){
       {return true;}
     }
     
-    
+    var bgwidth = $('#bgimage').width()*.9;
     
     setTimeout(function(){
         $('#title').fadeOut('slow')}, 5000);
@@ -79,16 +79,20 @@ $(document).ready(function(){
         if(!$('#char').is(':animated')){
             switch(e.keyCode){
                 case 37:
+                    if($('#char').position().left === 0){}
+                    else{
                     $('#char').css({background: 'url(\'dwarf.gif\')', 'background-position': 'center','background-size': 'contain','transform': 'rotatey(0deg)'}).animate({left: ['-=10vw', 'linear']}, 'fast');
-                    $('#addition').animate({left: ['-=10vw', 'linear']}, 'fast');
+                    $('#addition').animate({left: ['-=10vw', 'linear']}, 'fast');}
                     break;
                 case 38:
                     $('#char').animate({top: ['-=10vh']}, 250).animate({top: ['+=10vh', 'swing']}, 250);
                     $('#addition').animate({top: ['-=10vh']}, 250).animate({top: ['+=10vh', 'swing']}, 250);
                     break;
                 case 39:
+                    if($('#char').position().left >= bgwidth){}
+                    else{
                     $('#char').css({background: 'url(\'dwarf.gif\')','background-position': 'center','background-size': 'contain','transform': 'rotatey(180deg)'}).animate({left: ['+=10vw', 'linear']}, 'fast');
-                    $('#addition').animate({left: ['+=10vw', 'linear']}, 'fast');
+                    $('#addition').animate({left: ['+=10vw', 'linear']}, 'fast');}
                     break;
             }
         }
