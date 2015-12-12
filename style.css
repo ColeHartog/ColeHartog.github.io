@@ -93,3 +93,13 @@ body {
     color: #FFD954;
     opacity: 0;
 }
+
+.flyingray {
+    background: url('yes.gif');
+    width: 500px;
+    height: 206px;
+    position: relative;
+    top: -50px;
+    display: inline-block;
+    
+}

@@ -70,7 +70,8 @@ $(document).ready(function(){
       {return true;}
     }
     
-    var bgwidth = $('#bgimage').width()*.9;
+    var bgwidth = $('#bgimage').width();
+    var bgwidth9 = bgwidth*.9;
     
     setTimeout(function(){
         $('#title').fadeOut('slow')}, 5000);
@@ -89,7 +90,7 @@ $(document).ready(function(){
                     $('#addition').animate({top: ['-=10vh']}, 250).animate({top: ['+=10vh', 'swing']}, 250);
                     break;
                 case 39:
-                    if($('#char').position().left >= bgwidth){}
+                    if($('#char').position().left >= bgwidth9){}
                     else{
                     $('#char').css({background: 'url(\'dwarf.gif\')','background-position': 'center','background-size': 'contain','transform': 'rotatey(180deg)'}).animate({left: ['+=10vw', 'linear']}, 'fast');
                     $('#addition').animate({left: ['+=10vw', 'linear']}, 'fast');}
@@ -192,10 +193,29 @@ $(document).ready(function(){
     $('.coin').animate({top: ['+=100px', 'linear']});
     }, 400);
     
-    //function flying(){
-        
-    //}
+    function flying(){
+        var lorfly = getRandomInt(0,2);
+        if(lorfly === 1){
+        $('#bgimage').append('<div class="flyingray" style="left: 100vw"></div>');
+        setTimeout(removefly, 17000);
+        $('.flyingray').animate({left: ['-500px', 'linear']},16000);}
+        else{
+            $('#bgimage').append('<div class="flyingray" style="left: -500px"></div>');
+        setTimeout(removefly, 17000);
+        $('.flyingray').css({'transform': ['rotatey(180deg)', 'linear']});
+        $('.flyingray').animate({left: bgwidth},16000);
+        }
+    }
     
-    //setInterval(,5000)
+    function removefly(){
+        $('.flyingray').remove();
+    }
+    setTimeout(function(){
+        flying();
+        setInterval(flying, 22000);
+    }, 15000)
+    
+    //setInterval(function(){ 
+    //    if(collision($('.flyingray'), $('.coin:first-child')) == true){}
     
 });
