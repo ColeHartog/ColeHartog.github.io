@@ -31,7 +31,7 @@ $(document).ready(function(){
     setInterval(function(){
         if(sec === 59){
             sec = 0;
-            $('#seconds').text(sec);
+            $('#seconds').text('0' + sec);
         }
         else{
             sec++;
@@ -129,8 +129,13 @@ $(document).ready(function(){
             var bgbot = $('#bgimage').height();
             if(toppos >= bgbot){
                 $('.coin:first-child').remove();
+                if(Number($('#scorediv').html()) >= 200){
                 score = Number($('#scorediv').html()) - 200;
-                $('#scorediv').text(score);
+                $('#scorediv').text(score);}
+                else if(Number($('#scorediv').html()) === 100){
+                score = Number($('#scorediv').html()) - 100;
+                $('#scorediv').text(score);}
+                else{}
                 breaksound.play();
             }
         }, 200);
@@ -164,7 +169,6 @@ $(document).ready(function(){
         var scorefuncheck = Number($('#scorediv').html());
         var clearfun = setInterval(function(){
         if(Number($('#scorediv').html()) >= 1500){
-            console.log(true);
             clearInterval(siID);
             clearInterval(clearfun);
         }}, 200);
@@ -187,5 +191,11 @@ $(document).ready(function(){
     setInterval(function(){
     $('.coin').animate({top: ['+=100px', 'linear']});
     }, 400);
+    
+    //function flying(){
+        
+    //}
+    
+    //setInterval(,5000)
     
 });
