@@ -142,16 +142,18 @@ $(document).ready(function(){
         }, 200);
         
         
-        setInterval(function(){ if(collision($('#char'), $('.coin:first-child')) == true){
-            if($('.coin:first-child').css('visibility') !== 'hidden'){
-                $('.coin:first-child').css('visibility', 'hidden');
+        setInterval(function(){ 
+            $('.coin').each(function(){
+            if(collision($('#char'), $(this)) == true){
+            if($(this).css('visibility') !== 'hidden'){
+                $(this).css('visibility', 'hidden');
                 setTimeout(coinsound.play(), 300);
                 $('#addition').css({opacity: '1'}).animate({opacity: 0}, 500);
                 score = Number($('#scorediv').html()) + 100;
                 $('#scorediv').text(score);
-                var leftpos = $('.coin:first-child').offset().left;
-                var toppos = $('.coin:first-child').offset().top;
-                $('.coin:first-child').remove();
+                var leftpos = $(this).offset().left;
+                var toppos = $(this).offset().top;
+                $(this).remove();
                 
                 
                 console.log(leftpos);
@@ -163,7 +165,7 @@ $(document).ready(function(){
                 setTimeout(function(){$('#collected').remove()},505);
                 
             }
-        }}, 200);}
+        }})}, 200);}
         
     var coinspawn = function(delay){
         var siID = setInterval(goldCoin, delay);
@@ -193,6 +195,20 @@ $(document).ready(function(){
     $('.coin').animate({top: ['+=100px', 'linear']});
     }, 400);
     
+    
+    setInterval(function(){
+        $('.coin').each(function(){
+            if(collision($('.flyingray'), $(this)) == true){
+            if($(this).css('visibility') !== 'hidden'){
+                $(this).css('visibility', 'hidden');
+                setTimeout(coinsound.play(), 300);
+                $('#addition').css({opacity: '1'}).animate({opacity: 0}, 500);
+                $(this).remove();
+        }}})
+    },200);
+    
+    
+    
     function flying(){
         var lorfly = getRandomInt(0,2);
         if(lorfly === 1){
@@ -215,7 +231,5 @@ $(document).ready(function(){
         setInterval(flying, 22000);
     }, 15000)
     
-    //setInterval(function(){ 
-    //    if(collision($('.flyingray'), $('.coin:first-child')) == true){}
     
 });
