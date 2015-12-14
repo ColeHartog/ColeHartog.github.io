@@ -233,16 +233,16 @@ $(document).ready(function(){
     setInterval(function(){
         var scorecheck = (Number($('#scorediv').html()));
         if(scorecheck >= 5000 && scorecount === 1){
-            coinspawn3(1000);
+            coinspawn3(1200);
             scorecount = 2;
         }
         else if(scorecheck >= 2500 && scorecount === 0){
-            coinspawn2(1500);
+            coinspawn2(1800);
             scorecount = 1;
         }
     }, 200);
     
-    setTimeout(coinspawn(2250), 1000);
+    setTimeout(coinspawn(2600), 1000);
     var cfID = null;
     
     var coinfall = function(par1){
