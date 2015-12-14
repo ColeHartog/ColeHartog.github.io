@@ -295,6 +295,7 @@ $(document).ready(function(){
         setTimeout(removefly, 17000);
         $('.flyingray').css({'transform': 'rotatey(180deg)'});
         $('.flyingray').animate({left: [bgwidth, 'linear']}, 16000);
+        $('.flyingray').animate({left: [bgwidth, 'linear']}, 16000);
         }
     }
     
@@ -309,6 +310,7 @@ $(document).ready(function(){
     function endGame(){
         $('#title').text('Congratulations!');
         $('#title').animate({'opacity': 1}, 500);
+        $('#trophy').animate({'opacity': 1}, 500);
     };
     
     
