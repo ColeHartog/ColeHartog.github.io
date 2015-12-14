@@ -222,7 +222,7 @@ $(document).ready(function(){
         var siID = setInterval(goldCoin, delay);
         var scorefuncheck = Number($('#scorediv').html());
         var clearfun = setInterval(function(){
-        if(Number($('#scorediv').html()) >= 100000){
+        if(Number($('#scorediv').html()) >= 10000){
             clearInterval(siID);
             clearInterval(clearfun);
             endGame();
@@ -242,7 +242,7 @@ $(document).ready(function(){
         }
     }, 200);
     
-    setTimeout(coinspawn(2600), 1000);
+    setTimeout(coinspawn(2400), 1000);
     var cfID = null;
     
     var coinfall = function(par1){
@@ -266,7 +266,7 @@ $(document).ready(function(){
             if(collision($('.flyingray'), $(this)) == true){
             if($(this).css('visibility') !== 'hidden'){
                 $(this).css('visibility', 'hidden');
-                coinsound.play();
+                //coinsound.play();
                 $(this).remove();
                 pinkCoin();
         }}})
@@ -327,7 +327,7 @@ $(document).ready(function(){
                 if(toppos >= bgbot){
                 $(this).remove();}
                 else{}
-                breaksound.play();
+                //breaksound.play();
             }
             )}, 200);
         
