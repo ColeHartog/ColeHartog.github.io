@@ -56,6 +56,16 @@ body {
     opacity: 1;
 }
 
+#pinkcoin {
+    background: url('pinkcoin.gif');
+    background-position: center;
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: -60px;
+    opacity: 1;
+}
+
 #clock {
     position: fixed;
     text-align: center;

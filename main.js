@@ -22,6 +22,7 @@ $(document).ready(function(){
     var coinsound = $('#coinnoise')[0];
     coinsound.volume = 1;
     var breaksound = $('#break')[0];
+    breaksound.volume = .5;
     
     
     var mins = 0;
@@ -82,7 +83,8 @@ $(document).ready(function(){
                 case 37:
                     if($('#char').position().left === 0){}
                     else{
-                    $('#char').css({background: 'url(\'dwarf.gif\')', 'background-position': 'center','background-size': 'contain','transform': 'rotatey(0deg)'}).animate({left: ['-=10vw', 'linear']}, 'fast');
+                    
+                        $('#char').css({background: 'url(\'dwarf.gif\')', 'background-position': 'center','background-size': 'contain','transform': 'rotatey(0deg)'}).animate({left: ['-=10vw', 'linear']}, 200);
                     $('#addition').css({'transform': 'rotatey(0deg)'});
                     }
                     break;
@@ -92,7 +94,7 @@ $(document).ready(function(){
                 case 39:
                     if($('#char').position().left >= bgwidth9){}
                     else{
-                    $('#char').css({background: 'url(\'dwarf.gif\')','background-position': 'center','background-size': 'contain','transform': 'rotatey(180deg)'}).animate({left: ['+=10vw', 'linear']}, 'fast');
+                    $('#char').css({background: 'url(\'dwarf.gif\')','background-position': 'center','background-size': 'contain','transform': 'rotatey(180deg)'}).animate({left: ['+=10vw', 'linear']}, 200);
                     $('#addition').css({'transform': 'rotatey(180deg)'});
                     }
                     break;
@@ -134,7 +136,7 @@ $(document).ready(function(){
     var count = 0;
     function goldCoin(){
         count++;
-        var rnd = (getRandomInt(1,9)*10) + 1;
+        var rnd = (getRandomInt(2,8)*10) + 1;
         $('#coins').append('<div class="coin" id="coin' + count + ' "style="left: ' + rnd + 'vw"></div>');
         
         
@@ -174,8 +176,7 @@ $(document).ready(function(){
                 var toppos = $(this).offset().top;
                 $(this).remove();
                 
-                console.log(leftpos);
-                console.log(toppos);
+                
                 $('#coins').append('<div class="coin2" id="collected" style="left: ' + leftpos + 'px; top: ' + toppos +'px" ></div>');
                 $('#collected').queue(false);
                 var lrpos = $('#scorediv').offset().left + 150;
@@ -209,7 +210,7 @@ $(document).ready(function(){
         var siID = setInterval(goldCoin, delay);
         var scorefuncheck = Number($('#scorediv').html());
         var clearfun = setInterval(function(){
-        if(Number($('#scorediv').html()) >= 10000){
+        if(Number($('#scorediv').html()) >= 100000){
             clearInterval(siID);
             clearInterval(clearfun);
             endGame();
@@ -230,11 +231,24 @@ $(document).ready(function(){
     }, 200);
     
     setTimeout(coinspawn(2250), 1000);
+    var cfID = null;
     
-    setInterval(function(){
+    var coinfall = function(par1){
+        if(par1 === 'start'){
+        cfID = setInterval(function(){
     $('.coin').animate({top: ['+=100px', 'linear']});
+    $('.pinkcoin').animate({top: ['+=100px', 'linear']});
     }, 400);
+        console.log('cfID '+cfID);}
+        else
+            clearInterval(cfID);}
     
+    coinfall('start');
+    
+    var speedcoinfall = function(){return setInterval(function(){
+    $('.coin').animate({top: ['+=50px', 'linear']});
+        $('.pinkcoin').animate({top: ['+=50px', 'linear']});
+    }, 400);};
     
     setInterval(function(){
         $('.coin').each(function(){
@@ -243,10 +257,21 @@ $(document).ready(function(){
                 $(this).css('visibility', 'hidden');
                 setTimeout(coinsound.play(), 300);
                 $(this).remove();
+                pinkCoin();
         }}})
     },200);
     
-    
+    function speedcoinfallfun(){
+        coinfall('no');
+        console.log('stoped?')
+        var spcid = speedcoinfall();
+        setTimeout(function(){
+            console.log('what');
+            clearInterval(spcid);
+            coinfall('start');
+            }
+            , 7000);
+    }
     
     function flying(){
         var lorfly = getRandomInt(0,2);
@@ -267,12 +292,54 @@ $(document).ready(function(){
     }
     setTimeout(function(){
         flying();
-        setInterval(flying, 22000);
+        setInterval(flying, 27000);
     }, 15000)
     
     function endGame(){
         $('#title').text('Congratulations!');
         $('#title').animate({'opacity': 1}, 500);
     };
+    
+    
+    function pinkCoin(){
+        count++;
+        var rnd = (getRandomInt(1,9)*10) + 1;
+        $('#coins').append('<div class="pinkcoin" id="pinkcoin" style="left: ' + rnd + 'vw"></div>');
+        $('.pinkcoin').css({'background': 'url(\'pinkcoin.gif\')', 'background-position': 'center'});
+        
+        setInterval(function hchecker(){
+            $('.pinkcoin').each(function(){
+                var toppos = $(this).position().top;
+                var bgbot = $('#bgimage').height();
+                if(toppos >= bgbot){
+                $(this).remove();}
+                else{}
+                breaksound.play();
+            }
+            )}, 200);
+        
+        
+        setInterval(function(){ 
+            $('.pinkcoin').each(function(){
+            if(collision($('#char'), $(this)) == true){
+            if($(this).css('visibility') !== 'hidden'){
+                $(this).css('visibility', 'hidden');
+                setTimeout(coinsound.play(), 300);
+                
+                var leftpos = $(this).offset().left;
+                var toppos = $(this).offset().top;
+                $(this).remove();
+                
+                $('#coins').append('<div class="coin2 pinkcollected" id="" style="left: ' + leftpos + 'px; top: ' + toppos +'px" ></div>');
+                $('.pinkcollected').css({'background': 'url(\'pinkcoin.gif\')', 'background-position': 'center'});
+                $('.pinkcollected').queue(false);
+                var lrpos = $('#scorediv').offset().left + 150;
+                $('.pinkcollected').animate({top: ['50px', 'linear'], 'left': [lrpos, 'linear']}, 500);
+                setTimeout(function(){$('.pinkcollected').remove()},505);
+                
+                speedcoinfallfun();
+                
+            }
+        }})}, 200);}
     
 });
