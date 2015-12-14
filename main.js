@@ -74,7 +74,7 @@ $(document).ready(function(){
     var bgwidth9 = bgwidth*.9;
     
     setTimeout(function(){
-        $('#title').fadeOut('slow')}, 5000);
+        $('#title').animate({'opacity': 0}, 500)}, 5000);
     
     $(document).keydown(function(e){
         if(!$('#char').is(':animated')){
@@ -83,17 +83,18 @@ $(document).ready(function(){
                     if($('#char').position().left === 0){}
                     else{
                     $('#char').css({background: 'url(\'dwarf.gif\')', 'background-position': 'center','background-size': 'contain','transform': 'rotatey(0deg)'}).animate({left: ['-=10vw', 'linear']}, 'fast');
-                    $('#addition').animate({left: ['-=10vw', 'linear']}, 'fast');}
+                    $('#addition').css({'transform': 'rotatey(0deg)'});
+                    }
                     break;
                 case 38:
                     $('#char').animate({top: ['-=10vh']}, 250).animate({top: ['+=10vh', 'swing']}, 250);
-                    $('#addition').animate({top: ['-=10vh']}, 250).animate({top: ['+=10vh', 'swing']}, 250);
                     break;
                 case 39:
                     if($('#char').position().left >= bgwidth9){}
                     else{
                     $('#char').css({background: 'url(\'dwarf.gif\')','background-position': 'center','background-size': 'contain','transform': 'rotatey(180deg)'}).animate({left: ['+=10vw', 'linear']}, 'fast');
-                    $('#addition').animate({left: ['+=10vw', 'linear']}, 'fast');}
+                    $('#addition').css({'transform': 'rotatey(180deg)'});
+                    }
                     break;
             }
         }
@@ -113,23 +114,37 @@ $(document).ready(function(){
     );
     
     
+    var combonumber = -5;
+        function combo(par1){
+            if(par1 === 0){
+                combonumber = -5;
+            }
+            else{
+                combonumber = combonumber + 5;
+            }
+            return combonumber;
+        };
     
     
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min)) + min;
     };
+    
+    
     var count = 0;
     function goldCoin(){
         count++;
         var rnd = (getRandomInt(1,9)*10) + 1;
         $('#coins').append('<div class="coin" id="coin' + count + ' "style="left: ' + rnd + 'vw"></div>');
         
-          
+        
         setInterval(function hchecker(){
-            var toppos = $('.coin:first-child').position().top;
-            var bgbot = $('#bgimage').height();
-            if(toppos >= bgbot){
-                $('.coin:first-child').remove();
+            $('.coin').each(function(){
+                var toppos = $(this).position().top;
+                var bgbot = $('#bgimage').height();
+                if(toppos >= bgbot){
+                $(this).remove();
+                combo(0);
                 if(Number($('#scorediv').html()) >= 200){
                 score = Number($('#scorediv').html()) - 200;
                 $('#scorediv').text(score);}
@@ -139,7 +154,7 @@ $(document).ready(function(){
                 else{}
                 breaksound.play();
             }
-        }, 200);
+            })}, 200);
         
         
         setInterval(function(){ 
@@ -148,13 +163,16 @@ $(document).ready(function(){
             if($(this).css('visibility') !== 'hidden'){
                 $(this).css('visibility', 'hidden');
                 setTimeout(coinsound.play(), 300);
-                $('#addition').css({opacity: '1'}).animate({opacity: 0}, 500);
-                score = Number($('#scorediv').html()) + 100;
+                var increase = combo(1);
+                score = Number($('#scorediv').html()) + 100 + increase;
                 $('#scorediv').text(score);
+                var add = '+' + (100+increase).toString();
+                console.log(add);
+                $('#addition').text(add);
+                $('#addition').css({opacity: '1'}).animate({opacity: 0}, 500);
                 var leftpos = $(this).offset().left;
                 var toppos = $(this).offset().top;
                 $(this).remove();
-                
                 
                 console.log(leftpos);
                 console.log(toppos);
@@ -171,19 +189,41 @@ $(document).ready(function(){
         var siID = setInterval(goldCoin, delay);
         var scorefuncheck = Number($('#scorediv').html());
         var clearfun = setInterval(function(){
-        if(Number($('#scorediv').html()) >= 1500){
+        if(Number($('#scorediv').html()) >= 2500){
             clearInterval(siID);
             clearInterval(clearfun);
         }}, 200);
     };
     
     var coinspawn2 = function(delay){
-        setInterval(goldCoin, delay);};
+        var siID = setInterval(goldCoin, delay);
+        var scorefuncheck = Number($('#scorediv').html());
+        var clearfun = setInterval(function(){
+        if(Number($('#scorediv').html()) >= 5000){
+            clearInterval(siID);
+            clearInterval(clearfun);
+        }}, 200);
+    };
+    
+    var coinspawn3 = function(delay){
+        var siID = setInterval(goldCoin, delay);
+        var scorefuncheck = Number($('#scorediv').html());
+        var clearfun = setInterval(function(){
+        if(Number($('#scorediv').html()) >= 10000){
+            clearInterval(siID);
+            clearInterval(clearfun);
+            endGame();
+        }}, 200);
+    };
     
     var scorecount = 0;
     setInterval(function(){
         var scorecheck = (Number($('#scorediv').html()));
-        if(scorecheck === 1500 && scorecount === 0){
+        if(scorecheck >= 5000 && scorecount === 1){
+            coinspawn3(1000);
+            scorecount = 2;
+        }
+        else if(scorecheck >= 2500 && scorecount === 0){
             coinspawn2(1500);
             scorecount = 1;
         }
@@ -202,7 +242,6 @@ $(document).ready(function(){
             if($(this).css('visibility') !== 'hidden'){
                 $(this).css('visibility', 'hidden');
                 setTimeout(coinsound.play(), 300);
-                $('#addition').css({opacity: '1'}).animate({opacity: 0}, 500);
                 $(this).remove();
         }}})
     },200);
@@ -231,5 +270,9 @@ $(document).ready(function(){
         setInterval(flying, 22000);
     }, 15000)
     
+    function endGame(){
+        $('#title').text('Congratulations!');
+        $('#title').animate({'opacity': 1}, 500);
+    };
     
 });
