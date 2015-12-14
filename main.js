@@ -20,10 +20,23 @@ $(document).ready(function(){
     audio.loop = true;
     audio.play();
     var coinsound = $('#coinnoise')[0];
-    coinsound.volume = 1;
+    coinsound.volume = .1;
     var breaksound = $('#break')[0];
-    breaksound.volume = .5;
+    breaksound.volume = .2;
     
+    $('#mutebutt').click(function(){
+        if(audio.volume === .2){
+            audio.volume = 0;
+            breaksound.volume = 0;
+            coinsound.volume = 0;
+            return audio, breaksound, coinsound;
+        }
+        else
+            audio.volume = .2;
+            coinsound.volume = .2;
+            breaksound.volume = .2;
+        return audio, coinsound, breaksound;
+    });
     
     var mins = 0;
     var sec = 0;
@@ -164,12 +177,11 @@ $(document).ready(function(){
             if(collision($('#char'), $(this)) == true){
             if($(this).css('visibility') !== 'hidden'){
                 $(this).css('visibility', 'hidden');
-                setTimeout(coinsound.play(), 300);
+                coinsound.play();
                 var increase = combo(1);
                 score = Number($('#scorediv').html()) + 100 + increase;
                 $('#scorediv').text(score);
                 var add = '+' + (100+increase).toString();
-                console.log(add);
                 $('#addition').text(add);
                 $('#addition').css({opacity: '1'}).animate({opacity: 0}, 500);
                 var leftpos = $(this).offset().left;
@@ -238,8 +250,7 @@ $(document).ready(function(){
         cfID = setInterval(function(){
     $('.coin').animate({top: ['+=100px', 'linear']});
     $('.pinkcoin').animate({top: ['+=100px', 'linear']});
-    }, 400);
-        console.log('cfID '+cfID);}
+    }, 400);}
         else
             clearInterval(cfID);}
     
@@ -255,7 +266,7 @@ $(document).ready(function(){
             if(collision($('.flyingray'), $(this)) == true){
             if($(this).css('visibility') !== 'hidden'){
                 $(this).css('visibility', 'hidden');
-                setTimeout(coinsound.play(), 300);
+                coinsound.play();
                 $(this).remove();
                 pinkCoin();
         }}})
@@ -324,7 +335,7 @@ $(document).ready(function(){
             if(collision($('#char'), $(this)) == true){
             if($(this).css('visibility') !== 'hidden'){
                 $(this).css('visibility', 'hidden');
-                setTimeout(coinsound.play(), 300);
+                coinsound.play();
                 
                 var leftpos = $(this).offset().left;
                 var toppos = $(this).offset().top;

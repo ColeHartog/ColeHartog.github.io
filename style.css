@@ -113,3 +113,19 @@ body {
     display: inline-block;
     
 }
+
+#mutebutt {
+    position: fixed;
+    display: inline-block;
+    text-align: center;
+    width: 40px;
+    height: 20px;
+    top: calc(100vh - 50px);
+    left: calc(100vw - 125px);
+    color: #FFD954;
+}
+
+#mutebutt:hover {
+    cursor: pointer;
+    color: white;
+}
