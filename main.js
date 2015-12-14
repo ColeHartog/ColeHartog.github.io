@@ -294,7 +294,7 @@ $(document).ready(function(){
             $('#bgimage').append('<div class="flyingray" style="left: -500px"></div>');
         setTimeout(removefly, 17000);
         $('.flyingray').css({'transform': 'rotatey(180deg)'});
-        $('.flyingray').animate({left: bgwidth}, 16000);
+        $('.flyingray').animate({left: [bgwidth, 'linear']}, 16000);
         }
     }
     
